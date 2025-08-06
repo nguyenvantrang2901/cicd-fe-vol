@@ -51,10 +51,10 @@
         
         <template #dropdown>
             <el-dropdown-menu>
-                <el-dropdown-item><el-icon class="icon-btn"><Bell /></el-icon> Thông báo</el-dropdown-item>
-                <el-dropdown-item @click="handleUser"><el-icon class="icon-btn"><User /></el-icon>Thông tin người dùng</el-dropdown-item>
-                <el-dropdown-item @click="drawerSetting= true"><el-icon class="icon-btn"><Setting /></el-icon>Cài đặt</el-dropdown-item>
-                <el-dropdown-item><el-icon class="icon-btn"><SwitchButton /></el-icon>Đăng xuất</el-dropdown-item>
+                <el-dropdown-item><el-icon class="icon-btn"><Bell /></el-icon> Notification</el-dropdown-item>
+                <el-dropdown-item @click="handleUser"><el-icon class="icon-btn"><User /></el-icon>User info</el-dropdown-item>
+                <el-dropdown-item @click="drawerSetting= true"><el-icon class="icon-btn"><Setting /></el-icon>Settings</el-dropdown-item>
+                <el-dropdown-item><el-icon class="icon-btn"><SwitchButton /></el-icon>Logout</el-dropdown-item>
             </el-dropdown-menu>
 
             <el-drawer v-model="drawerSetting" title="Basic Settings" :with-header="true" size="25%">
