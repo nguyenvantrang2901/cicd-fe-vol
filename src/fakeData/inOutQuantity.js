@@ -20,7 +20,7 @@ export const inOutQuantity = [
     {
         "id": 4,
         "inbound": 220,
-        "outbound": 130,
+        "outbound": 140,
         "date": "2025-08-04"
     },
     {
