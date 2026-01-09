@@ -2,7 +2,7 @@
   <div class="header">
     <!-- Logo + tên -->
     <div class="header-left">
-      <span class="title">.Net8 Vol开发框架</span>
+      <span class="title">VIỆT NAM VÔ ĐỊCH</span>
     </div>
 
     <!-- Navigation menu -->
@@ -165,6 +165,7 @@ onMounted(() => {
 .title {
   font-weight: bold;
   font-size: 18px;
+  color: red;
 }
 
 .header-center {

@@ -18,7 +18,7 @@
   <el-row :gutter="20" style="margin-top: 20px">
     <el-col :span="16">
       <el-card shadow="hover" header="In and out quantity">
-        <div style="height: 400px; width: 100%; display: flex; align-items: center; justify-content: center; color: gray">
+        <div style="height: 450px; width: 100%; display: flex; align-items: center; justify-content: center; color: gray">
           <div ref="chartRef" style="width: 100%; height: 450px;"></div>
         </div>
       </el-card>
@@ -32,11 +32,11 @@
     </el-col>
   </el-row>
 
-  <el-row :gutter="20" style="margin-top: 20px;">
-    <el-col :span="16" style="text-align: center">
-      <el-table :data="dataTable" border height="400" style="width: 100%; cursor: pointer;" v-loading="loading" :default-sort="{ prop: 'income', order: 'ascending' }">
+  <el-row style="margin-top: 20px; height: 100%; overflow: auto;">
+    <el-col style="text-align: center; ">
+      <el-table :data="paginatedData" border height="450" style="width: 100%; cursor: pointer;" v-loading="loading" :default-sort="{ prop: 'income', order: 'ascending' }">
         <el-table-column type="selection" width="55"/>
-        <el-table-column type="index" label="#" width="50" />
+        <el-table-column type="index" label="#" width="50" :index="indexMethod"/>
         <el-table-column prop="dept" label="Department" />
         <el-table-column prop="date" label="Date" sortable/>
         <el-table-column prop="income" label="Income" width="100" sortable/>
@@ -45,30 +45,25 @@
         <el-table-column prop="balance" label="Balance" width="100" sortable/>
         <el-table-column prop="remark" label="Remark" />
       </el-table>
-    </el-col>
-  </el-row>
-
-  <el-row style="margin-top: 20px; text-align: center;">
-    <el-col :span="24">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="100"
-        :page-size="10"
-        :page-count="10"
-        style="display: inline-block; margin-top: 20px;"
+      <Pagination
+        v-if="total > 0"
+        v-model:page="currentPage"
+        v-model:limit="pageSize"
+        :total="total"
+        @pagination="handlePagination"
       />
     </el-col>
   </el-row>
-  
 </template>
 
 <script setup>
-import { Document, Upload, Collection, ShoppingCart, Right } from '@element-plus/icons-vue'
+import { Document, Upload, Collection, ShoppingCart } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import { ref, onMounted, reactive } from 'vue'
 import { inOutQuantity } from '@/fakeData/inOutQuantity'
 import { productsQuantity } from '@/fakeData/productsQuantity'
+import Pagination from '@/helper/Pagination/index.vue'
+import { usePagination } from '@/hooks/usePagination'
 
 const statCards = [
   { label: "This month's inventory quantity", count: 2200, icon: Document, color: '#409EFF' },
@@ -91,6 +86,12 @@ const dataTable = reactive([
   { dept: 'Administration', date: '2025-08-19', income: 15000, expenditure: 8000, consum: 7000, balance: 5500, remark: 'Office management' },
   { dept: 'Procurement', date: '2025-08-21', income: 16000, expenditure: 8500, consum: 7500, balance: 6000, remark: 'Supplier negotiations' },
 ])
+const { currentPage, pageSize, total, paginatedData, handlePagination } = usePagination(dataTable, 10)
+// Hàm tính số thứ tự liên tục
+const indexMethod = (index) => {
+  // Công thức: (Trang hiện tại - 1) * Số dòng mỗi trang + index dòng hiện tại + 1
+  return (currentPage.value - 1) * pageSize.value + index + 1
+}
 const pieChartRef = ref(null)
 const chartRef = ref(null)
 const loading = ref(false)
