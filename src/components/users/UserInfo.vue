@@ -3,7 +3,23 @@
     <template #header>
       <div style="display: flex; justify-content: space-between; align-items: center">
         <span>User Management</span>
-        <el-input v-model="search" placeholder="Search..." size="small" style="width: 200px; height: 30px;" @input="filterUser" />
+        <div>
+          <el-input
+            v-model="search"
+            placeholder="Search by User name or Name"
+            size="semi-large"
+            clearable
+            style="width: 250px; margin-right: 10px;"
+          />
+          <el-button
+            type="primary"
+            size="semi-large"
+            @click="handleExportData"
+          >
+            <el-icon><Download /></el-icon>
+            Export Data
+          </el-button>
+          </div>
       </div>
     </template>
 
@@ -76,6 +92,7 @@
     </template>
   </el-dialog>
   <!--mở dialog user info-->
+  <!-- Nếu muốn click bên ngoài đóng dialog thì bỏ :close-on-click-modal="false" -->
   <el-dialog
     v-model="dialogVisible"
     title="User Information"
@@ -165,6 +182,7 @@
 import { ref, onMounted, watch, reactive } from 'vue'
 import userInfo from '@/api/userInfo'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import  * as XLSX from 'xlsx'
 
 // State
 const users = ref([])
@@ -268,6 +286,50 @@ const handleDeleteUser = (id) => {
   })
 }
 
+const handleExportData = () => {
+  //Kiểm tra xem có dữ liệu không
+  if(filteredUsers.value.length === 0) {
+    ElMessage.warning("No data to export");
+    return;
+  }
+  try {
+    //Chuyển đổi dữ liệu sang định dạng worksheet
+    const dataToExport = filteredUsers.value.map((user, index) => ({
+      'NO.': index + 1,
+      'User Name': user.userName,
+      'Name': user.name,
+      'Role': user.role,
+      'Gender': user.gender,
+      'Availability': user.availability,
+      'Remark': user.remark || ''
+    }))
+    //Tạo Worksheet từ dữ liệu JSON
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+
+    //Tùy chỉnh độ rộng cột (Optional - giúp file Excel dễ nhìn hơn)
+    const columnWidths = [
+      { wch: 5 },  
+      { wch: 20 }, 
+      { wch: 25 }, 
+      { wch: 15 }, 
+      { wch: 10 }, 
+      { wch: 15 }, 
+      { wch: 30 }
+    ]
+    worksheet['!cols'] = columnWidths;
+
+    //Tạo Workbook và thêm Worksheet vào
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "User List");
+
+    //Xuất file (Tên file kèm ngày giờ hiện tại)
+    const date = new Date().toISOString().slice(0,10);
+    XLSX.writeFile(workbook, `User_Management_${date}.xlsx`);
+  } catch (error) {
+    console.log("Export data failed", error)
+    ElMessage.error("Error exporting data: " + error.message);
+  }
+}
 // On mount
 onMounted(fetchUsers)
 </script>
