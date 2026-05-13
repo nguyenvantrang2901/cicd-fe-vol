@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Check, Delete, Plus } from '@element-plus/icons-vue'
-import { useTodos } from './composables/useTodos'
+import { useTodos } from '@/composables/useTodos.js'
 
 const { todos, addTodo, removeTodo } = useTodos()
 const inputTodo = ref('')

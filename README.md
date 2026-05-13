@@ -27,3 +27,7 @@ npm run dev
 ```sh
 npm run build
 ```
+### Khi cần rebuild
+```sh
+không cần ai hướng dẫn, tạo tự làm vẫn cứ là okela
+```

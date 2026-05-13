@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.vue'
 import MyApproval from '@/components/MES/approval/MyApproval.vue'
 import ApprovalConfig from '@/components/MES/approval/ApprovalConfig.vue'
 import UserInfo from '@/components/users/UserInfo.vue'
+import Todo from '@/components/MES/approval/todo.vue'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
         name: 'ApprovalConfig',
         component: ApprovalConfig
       },
+      {
+        path: '/approval/todo',
+        name: 'Todo',
+        component: Todo
+      }
       // các page khác
     ]
   },

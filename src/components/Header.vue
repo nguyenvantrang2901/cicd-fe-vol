@@ -2,6 +2,7 @@
   <div class="header">
     <!-- Logo + tên -->
     <div class="header-left">
+      <span class="title">Welcome to</span>
       <span class="title">VIỆT NAM VÔ ĐỊCH</span>
     </div>
 
@@ -28,6 +29,10 @@
         size="small"
         class="search-box"
       />
+      <el-icon @click="handleChangeTheme" class="el-icon">
+        <Moon v-if="isThemeDark"/>
+        <Sunny v-else/>
+      </el-icon>
       <el-icon class="icon-btn" @click="handleUser"><User /></el-icon>
       <el-icon class="icon-btn" @click="drawerSetting=true"><Setting /></el-icon>
       <el-icon class="icon-btn"><SwitchButton /></el-icon>
@@ -69,7 +74,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Bell, SwitchButton, User, Setting, Search } from '@element-plus/icons-vue'
+import { Bell, SwitchButton, User, Setting, Search, Moon, Sunny } from '@element-plus/icons-vue'
 import logoUser from '@/assets/logo.jpg'
 import SettingsDrawer from '@/helper/SettingsDrawer.vue'
 import { useRouter} from 'vue-router'
@@ -87,6 +92,7 @@ const active = ref('1')
 const search = ref('')
 const headerItems = ref([])
 const loading = ref(false)
+const isThemeDark = ref(false)
 const now = ref('')
 const updateTime = () => {
   const d = new Date()
@@ -137,6 +143,17 @@ const fetchDataHeaderItem = async() => {
 const handleClickHeaderID = (id) => {
   active.value = String(id)
   menuStore.setHeaderID(id)
+}
+//Change theme
+const handleChangeTheme = () => {
+  isThemeDark.value = !isThemeDark.value
+  if (isThemeDark.value) {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    console.log("Dark theme enabled")
+  } else {
+    document.documentElement.removeAttribute('data-theme')
+    console.log("Light theme enabled")
+  }
 }
 onMounted(() => {
   fetchDataHeaderItem()
