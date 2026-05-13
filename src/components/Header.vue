@@ -2,7 +2,6 @@
   <div class="header">
     <!-- Logo + tên -->
     <div class="header-left">
-      <span class="title">Welcome to</span>
       <span class="title">VIỆT NAM VÔ ĐỊCH</span>
     </div>
 
